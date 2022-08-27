@@ -38,7 +38,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       try {
         image = await filterImageFromURL(image_url);
         res.sendFile(image)
-        setTimeout(() => deleteLocalFiles([image]), 0)
       } catch (e) {
         res.status(500).json({error: 'An error occurred while processing your image_url'})
       }

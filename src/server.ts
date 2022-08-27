@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import validator from 'validator';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 (async () => {
@@ -28,7 +29,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-
+  app.get("/filteredimage", async (req, res) => {
+      const { image_url } : {image_url: string} = req.query;
+      if (!image_url || !validator.isURL(image_url, {protocols: ['http', 'https']}) || !image_url.match(/jpg$|png$/)) {
+        res.status(400).json('Please provide a valid image_url with a jpg or png file')
+      }
+  });
   //! END @TODO1
   
   // Root Endpoint

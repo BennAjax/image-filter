@@ -34,6 +34,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       if (!image_url || !validator.isURL(image_url, {protocols: ['http', 'https']}) || !image_url.match(/jpg$|png$/)) {
         res.status(400).json('Please provide a valid image_url with a jpg or png file')
       }
+      let image: string;
+      try {
+        image = await filterImageFromURL(image_url);
+        res.sendFile(image)
+        setTimeout(() => deleteLocalFiles([image]), 0)
+      } catch (e) {
+        res.status(500).json({error: 'An error occurred while processing your image_url'})
+      }
   });
   //! END @TODO1
   
